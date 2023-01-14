@@ -24,9 +24,30 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Bitcoin Price</h1>
-      <h3>${price}</h3>
-    </div>
+      <header>
+        <h1>Pleb Wallet</h1>
+      </header>
+      {/* <Buttons> */}
+      <div className='row'>
+        <div className='balance-card'>
+          <h2>Balance</h2>
+          {/* <p>{balance}</p>*/}
+        </div>
+        <div className='balance-card'>
+          <h2>Price</h2>
+          {/* <p>${price}</p> */}
+        </div>
+      </div>
+      <div className='row'>
+        <div className='row-item'>
+          {/* <Transactions transactions={transactions} /> */}
+        </div>
+        <div className='row-item'>{/* <Chart chartData={chartData} /> */}</div>
+      </div>
+      <footer>
+        <p>For plebs, by plebs</p>
+      </footer>
+    </div>  
   );
 }
 
