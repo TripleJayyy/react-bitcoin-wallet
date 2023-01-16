@@ -3,13 +3,14 @@ import './App.css';
 import axios from 'axios';
 
 function App() {
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(null);
 
   const getPrice = () => {
     axios
       .get("https://api.coinbase.com/v2/prices/BTC-USD/spot")
 
       .then((res) => {
+        console.log(res.data.data.amount);
         setPrice(res.data.data.amount);
       })
 
@@ -20,6 +21,13 @@ function App() {
 
   useEffect(() => {
     getPrice();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getPrice();
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -35,7 +43,7 @@ function App() {
         </div>
         <div className='balance-card'>
           <h2>Price</h2>
-          {/* <p>${price}</p> */}
+          <p>${price}</p>
         </div>
       </div>
       <div className='row'>
