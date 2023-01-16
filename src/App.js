@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import axios from 'axios';
+import Transactions from './components/Transactions';
 
 function App() {
   const [price, setPrice] = useState(null);
+  const [balance, setBalance] = useState(null);
 
   const getPrice = () => {
     axios
@@ -19,6 +21,18 @@ function App() {
       });
   };
 
+  const getWalletBalance = () => {
+    const headers = {
+      "x-Api-Key": "9c70f13ada074722a74335ca67e198bf",
+    }
+    axios
+      .get("https://legend.lnbits.com/api/v1/wallet", { headers })
+      .then((res) => {
+        setBalance(res.data.balance / 1000);
+      })
+      .catch((err) => console.log(err));
+  }
+
   useEffect(() => {
     getPrice();
   }, []);
@@ -26,6 +40,7 @@ function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       getPrice();
+      getWalletBalance();
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -39,7 +54,7 @@ function App() {
       <div className='row'>
         <div className='balance-card'>
           <h2>Balance</h2>
-          {/* <p>{balance}</p>*/}
+          <p>{balance}</p>
         </div>
         <div className='balance-card'>
           <h2>Price</h2>
@@ -48,7 +63,7 @@ function App() {
       </div>
       <div className='row'>
         <div className='row-item'>
-          {/* <Transactions transactions={transactions} /> */}
+          <Transactions  />
         </div>
         <div className='row-item'>{/* <Chart chartData={chartData} /> */}</div>
       </div>
