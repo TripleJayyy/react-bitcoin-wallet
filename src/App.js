@@ -6,6 +6,7 @@ import Transactions from './components/Transactions';
 function App() {
   const [price, setPrice] = useState(null);
   const [balance, setBalance] = useState(null);
+  const [transactions, setTransactions] = useState([]);
 
   const getPrice = () => {
     axios
@@ -33,14 +34,29 @@ function App() {
       .catch((err) => console.log(err));
   }
 
+  const getTransactions = () => {
+    const headers = {
+      "x-Api-Key": "9c70f13ada074722a74335ca67e198bf",
+    };
+    axios
+      .get("https://legend.lnbits.com/api/v1/payments", { headers })
+      .then((res) => {
+        setTransactions(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     getPrice();
+    getWalletBalance();
+    getTransactions();
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       getPrice();
       getWalletBalance();
+      getTransactions();
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -63,7 +79,7 @@ function App() {
       </div>
       <div className='row'>
         <div className='row-item'>
-          <Transactions  />
+          <Transactions transactions={transactions} />
         </div>
         <div className='row-item'>{/* <Chart chartData={chartData} /> */}</div>
       </div>
