@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import axios from 'axios';
 import Transactions from './components/Transactions';
+import Buttons from './components/Buttons';
 
 function App() {
   const [price, setPrice] = useState(null);
@@ -66,7 +67,7 @@ function App() {
       <header>
         <h1>Pleb Wallet</h1>
       </header>
-      {/* <Buttons> */}
+      <Buttons />
       <div className='row'>
         <div className='balance-card'>
           <h2>Balance</h2>
