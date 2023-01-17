@@ -96,7 +96,7 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>Pleb Wallet</h1>
+        <h1>TripleJay Wallet</h1>
       </header>
       <Buttons />
       <div className='row'>
