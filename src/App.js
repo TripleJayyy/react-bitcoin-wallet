@@ -3,11 +3,13 @@ import './App.css';
 import axios from 'axios';
 import Transactions from './components/Transactions';
 import Buttons from './components/Buttons';
+import Chart from './components/Chart';
 
 function App() {
   const [price, setPrice] = useState(null);
   const [balance, setBalance] = useState(null);
   const [transactions, setTransactions] = useState([]);
+  const [chartData, setChartData] = useState(null);
 
   const getPrice = () => {
     axios
@@ -16,6 +18,7 @@ function App() {
       .then((res) => {
         console.log(res.data.data.amount);
         setPrice(res.data.data.amount);
+        updateChartData(res.data.data.amount);
       })
 
       .catch((err) => {
@@ -45,6 +48,34 @@ function App() {
         setTransactions(res.data);
       })
       .catch((err) => console.log(err));
+  };
+
+  const updateChartData = (currentPrice) => {
+    const timestamp = Date.now();
+
+    setChartData((prevState) => {
+      if(!prevState)
+      return [
+        {
+          x: timestamp,
+          y: Number(currentPrice),
+        },
+      ];
+
+      if (
+        prevState[prevState.length -1].x === timestamp ||
+        prevState[prevState.length -1].y === Number(currentPrice)
+      )
+        return prevState;
+      
+        return [
+          ...prevState,
+          {
+            x:timestamp,
+            y:Number(currentPrice),
+          },
+        ];
+    });
   };
 
   useEffect(() => {
@@ -82,7 +113,9 @@ function App() {
         <div className='row-item'>
           <Transactions transactions={transactions} />
         </div>
-        <div className='row-item'>{/* <Chart chartData={chartData} /> */}</div>
+        <div className='row-item'>
+          <Chart chartData={chartData} />
+          </div>
       </div>
       <footer>
         <p>For plebs, by plebs</p>
